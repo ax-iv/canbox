@@ -1,4 +1,5 @@
 LIBOPENCM3_DIR = libopencm3
+SSD1306_DIR = -Istm32-ssd1306/ssd1306
 LIBOPENCM3_INCLUDES = -I$(LIBOPENCM3_DIR)/include
 F103_COMMON_FLAGS=-mcpu=cortex-m3 -mthumb -mfix-cortex-m3-ldrd -msoft-float -Wall
 F103_INCLUDES=$(COMMON_INCLUDES) $(LIBOPENCM3_INCLUDES) $(SSD1306_DIR)

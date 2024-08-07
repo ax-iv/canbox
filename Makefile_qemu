@@ -1,4 +1,4 @@
-SSD1306_DIR = -Istm32-ssd1306/ssd1306
+
 QEMU_OBJS = qemu/fw/hw_clock.qemu \
 		qemu/fw/hw_can.qemu \
 		qemu/fw/hw_gpio.qemu \

@@ -5,6 +5,7 @@
 #include "hw.h"
 #include "hw_clock.h"
 #include "hw_can.h"
+#include "hw_i2c.h"
 #include "hw_tick.h"
 #include "hw_usart.h"
 #include "hw_conf.h"
@@ -29,6 +30,8 @@ void hw_setup(void)
 
 	hw_can_setup(hw_can_get_mscan(), e_speed_125);
 
+	hw_i2c_setup();
+
 	hw_conf_setup();
 
 	cm_enable_interrupts();
@@ -45,6 +48,8 @@ void hw_sleep(void)
 	hw_usart_disable(hw_usart_get());
 
 	hw_can_sleep(hw_can_get_mscan());
+
+	hw_i2c_sleep();
 
 	cm_enable_interrupts();
 

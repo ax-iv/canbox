@@ -10,6 +10,8 @@
 #include "canbox.h"
 #include "conf.h"
 
+#define USE_SSD1306 
+
 static uint32_t rear_off_delay = 0;
 static uint32_t rear_on_delay = 0;
 static uint32_t rear_on_timeout = 200;

@@ -8,5 +8,9 @@ void hw_clock_setup(void)
 
 	/* Enable AFIO clock. */
 	rcc_periph_clock_enable(RCC_AFIO);
+	#ifdef USE_SSD1306 
+		rcc_periph_clock_enable(RCC_GPIOB);
+		rcc_periph_clock_enable(RCC_I2C2);
+	#endif
 }
 

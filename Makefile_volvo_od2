@@ -5,8 +5,8 @@ VOLVO_OD2_OBJS = volvo_od2/fw/hw_clock.vo \
 		volvo_od2/fw/hw_tick.vo \
 		volvo_od2/fw/hw_usart.vo \
 		volvo_od2/fw/hw_sleep.vo \
-		volvo_od2/fw/hw_conf.vo
-
+		volvo_od2/fw/hw_conf.vo \
+		volvo_od2/fw/hw_i2c.vo 
 %.vo : %.c
 	$(CC) $(F103_CFLAGS) -c $< -o $@
 
