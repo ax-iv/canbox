@@ -1,4 +1,4 @@
-SSD1306_DIR = stm32-ssd1306/ssd1306
+
 VOLVO_OD2_OBJS = volvo_od2/fw/hw_clock.vo \
 		volvo_od2/fw/hw_can.vo \
 		volvo_od2/fw/hw_gpio.vo \

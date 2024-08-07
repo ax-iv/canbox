@@ -1,4 +1,4 @@
-SSD1306_DIR = stm32-ssd1306/ssd1306
+
 NUC131_BSP_DIR = vw_nc03/fw/nuc131bsp
 NUC131_BSP_INCLUDES=-I$(NUC131_BSP_DIR)/Library/CMSIS/Include  -I$(NUC131_BSP_DIR)/Library/Device/Nuvoton/NUC131/Include -I$(NUC131_BSP_DIR)/Library/StdDriver/inc
 NUC131_COMMON_FLAGS=-mcpu=cortex-m0 -mthumb -msoft-float -Wall
