@@ -10,6 +10,7 @@
 #define USE_SKODA_FABIA
 #define USE_Q3_2015
 #define USE_TOYOTA_PREMIO_26X
+#define USE_TOYOTA_CAMRY40
 
 static float scale(float value, float in_min, float in_max, float out_min, float out_max)
 {
@@ -209,6 +210,10 @@ uint8_t is_timeout(struct msg_desc_t * desc)
 #include "cars/toyota_premio_26x.c"
 #endif
 
+#ifdef USE_TOYOTA_CAMRY40
+#include "cars/toyota_camry40.c"
+#endif
+
 enum e_car_t car_get_next_car(void)
 {
 	int car = carstate.car;
@@ -300,7 +305,7 @@ void car_init(enum e_car_t car, struct key_cb_t * cb)
 	e_speed_t speed = e_speed_125;
 	if ((car == e_car_skoda_fabia) || (car == e_car_q3_2015))
 		speed = e_speed_100;
-	else if (car == e_car_toyota_premio_26x)
+	else if (car == e_car_toyota_premio_26x || car == e_car_toyota_camry40)
 		speed = e_speed_500;
 	hw_can_set_speed(hw_can_get_mscan(), speed);
 }
@@ -348,6 +353,11 @@ void car_process(uint8_t ticks)
 #ifdef USE_TOYOTA_PREMIO_26X
 			in_process(can, ticks, toyota_premio_26x_ms, sizeof(toyota_premio_26x_ms)/sizeof(toyota_premio_26x_ms[0]));
 #endif
+			break;
+		case e_car_toyota_camry40:
+#ifdef USE_TOYOTA_CAMRY40
+			in_process(can, ticks,toyota_camry_40_ms,sizeof(toyota_camry_40_ms)/sizeof(toyota_camry_40_ms[0]));
+#endif		
 			break;
 		default:
 			break;

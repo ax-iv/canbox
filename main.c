@@ -298,6 +298,9 @@ void print_debug(void)
 		case e_car_toyota_premio_26x:
 			scar = "TOYOTA PREMIO 26x";
 			break;
+		case e_car_toyota_camry40:
+			scar = "TOYOTA CAMRY 40";
+			break;
 		default:
 			break;
 	}
