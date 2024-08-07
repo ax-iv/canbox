@@ -1,7 +1,8 @@
 LIBOPENCM3_DIR = libopencm3
+SSD1306_DIR = stm32-ssd1306/ssd1306
 LIBOPENCM3_INCLUDES = -I$(LIBOPENCM3_DIR)/include
 F103_COMMON_FLAGS=-mcpu=cortex-m3 -mthumb -mfix-cortex-m3-ldrd -msoft-float -Wall
-F103_INCLUDES=$(COMMON_INCLUDES) $(LIBOPENCM3_INCLUDES)
+F103_INCLUDES=$(COMMON_INCLUDES) $(LIBOPENCM3_INCLUDES) $(SSD1306_DIR)
 F103_CFLAGS=$(F103_COMMON_FLAGS) -DSTM32F1 $(F103_INCLUDES) $(COMMON_CFLAGS) --specs=nosys.specs 
 F103_LDFLAGS=$(F103_COMMON_FLAGS) $(COMMON_LDFLAGS) --specs=nosys.specs -nostartfiles
 
@@ -24,5 +25,4 @@ LIBOPENCM3_OBJS = $(LIBOPENCM3_DIR)/lib/stm32/f1/gpio.stm32f1 \
 		$(LIBOPENCM3_DIR)/lib/stm32/common/flash_common_f01.stm32f1 \
 		$(LIBOPENCM3_DIR)/lib/stm32/can.stm32f1 \
 		$(LIBOPENCM3_DIR)/lib/stm32/common/iwdg_common_all.stm32f1 \
-		$(LIBOPENCM3_DIR)/lib/stm32/common/exti_common_all.stm32f1
-
+		$(LIBOPENCM3_DIR)/lib/stm32/common/exti_common_all.stm32f1 
