@@ -1,3 +1,0 @@
-[submodule "ssd1306"]
-	path = ssd1306
-	url = https://github.com/StanislavLakhtin/ssd1306_libopencm3.git
