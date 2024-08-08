@@ -1,6 +1,8 @@
 #ifndef HW_H
 #define HW_H
 
+#define USE_SSD1306  1
+
 #include <inttypes.h>
 
 void hw_setup(void);

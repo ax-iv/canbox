@@ -10,7 +10,7 @@ VOLVO_OD2_OBJS = volvo_od2/fw/hw_clock.vo \
 %.vo : %.c
 	$(CC) $(F103_CFLAGS) -c $< -o $@
 
-volvo_od2.bin: main.vo canbox.vo ring.vo conf.vo car.vo tick.vo hw.vo sbrk.vo $(VOLVO_OD2_OBJS) $(LIBOPENCM3_OBJS)
+volvo_od2.bin: main.vo canbox.vo ring.vo conf.vo car.vo tick.vo hw.vo sbrk.vo gyver_oled.vo $(VOLVO_OD2_OBJS) $(LIBOPENCM3_OBJS)
 	$(CC) $^ -L. -Tvolvo_od2/fw/x32f103x8.ld -L$(LIBOPENCM3_DIR)/lib/stm32/f1 $(F103_LDFLAGS) $(F103_INCLUDES) $(SSD1306_DIR) -Wl,-Map=volvo_od2.map -o volvo_od2.elf
 	$(OBJCOPY) -O binary volvo_od2.elf $@
 

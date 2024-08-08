@@ -11,6 +11,8 @@ void hw_systick_callback(void)
 
 	timer.flag_tick = 1;
 	timer.msec++;
+	timer.millis++;
+	
 
 	if (++div_1000ms >= SEC_TO_TICK(1)) {
 

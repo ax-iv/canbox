@@ -1,3 +1,7 @@
+/*
+	Based on project https://github.com/smartgauges/canbox
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -9,8 +13,6 @@
 #include "car.h"
 #include "canbox.h"
 #include "conf.h"
-
-#define USE_SSD1306 
 
 static uint32_t rear_off_delay = 0;
 static uint32_t rear_on_delay = 0;
@@ -510,6 +512,7 @@ int main(void)
 
 				canbox_process();
 			}
+			drawOLED();
 		}
 
 		if (timer.flag_1000ms) {

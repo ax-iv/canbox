@@ -16,6 +16,7 @@ typedef struct
 	volatile uint16_t flag_1000ms;
 	volatile uint32_t msec;
 	volatile uint32_t sec;
+	volatile uint32_t millis;
 } tick_t;
 extern volatile tick_t timer;
 

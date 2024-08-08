@@ -54,6 +54,9 @@ typedef struct car_state_t
 	uint32_t temp;
 	uint8_t fuel_lvl;
 	uint8_t low_fuel_lvl;
+	uint8_t cruse_enable;
+	uint8_t cruse_active;
+	uint16_t cruse_speed;
 } car_state_t;
 
 static car_state_t carstate =
@@ -89,6 +92,9 @@ static car_state_t carstate =
 	.temp = 0,
 	.fuel_lvl = 0,
 	.low_fuel_lvl = STATE_UNDEF,
+	.cruse_enable = 0,
+	.cruse_active = 0,
+	.cruse_speed = 0
 };
 
 typedef struct car_air_state_t
@@ -300,7 +306,12 @@ void car_init(enum e_car_t car, struct key_cb_t * cb)
 	carstate.near_lights = STATE_UNDEF,
 	carstate.park_break = STATE_UNDEF,
 
+	carstate.cruse_enable = 0;
+	carstate.cruse_active = 0;
+	carstate.cruse_speed = 0;
+
 	key_state.key_cb = cb;
+
 
 	e_speed_t speed = e_speed_125;
 	if ((car == e_car_skoda_fabia) || (car == e_car_q3_2015))
@@ -362,6 +373,16 @@ void car_process(uint8_t ticks)
 		default:
 			break;
 	}
+}
+
+uint8_t car_get_cruise_enable(void){	
+	return carstate.cruse_enable;
+}
+uint8_t car_get_cruise_active(void){	
+	return carstate.cruse_active;
+}
+uint8_t car_get_cruise_speed(void){	
+	return carstate.cruse_speed;
 }
 
 uint8_t car_get_acc(void)
