@@ -1,0 +1,6 @@
+*.vo
+*.qemu 
+*.d 
+*.elf
+*.stm32f1
+*.map

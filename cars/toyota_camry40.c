@@ -206,7 +206,9 @@ static void toyota_camry_40_ms_air_temp_handler(const uint8_t * msg, struct msg_
 	car_air_state.r_temp = 16+msg[1]/2;
 }
 
+
 static void  toyota_camry_40_ms_fuel_handler(const uint8_t * msg, struct msg_desc_t * desc){
+	//Запрос: 7C0#0221290000000000
 	if (is_timeout(desc)) {
 		carstate.fuel_lvl = STATE_UNDEF;
 		carstate.low_fuel_lvl = STATE_UNDEF;
@@ -232,7 +234,7 @@ struct msg_desc_t toyota_camry_40_ms[] =
 	{ 0x396,   100, 0, 0, toyota_camry_40_ms_park_handler},
 	{ 0x381,   1000, 0, 0, toyota_camry_40_ms_air_set_handler},
 	{ 0x382,   1000, 0, 0, toyota_camry_40_ms_air_temp_handler},
-	{ 0x7C8,   10000, 0, 0,toyota_camry_40_ms_fuel_handler},
+	{ 0x7C8,   11000, 0, 0,toyota_camry_40_ms_fuel_handler},
 	
 };
 

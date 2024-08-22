@@ -125,6 +125,8 @@ uint8_t car_get_cruise_enable(void);
 uint8_t car_get_cruise_active(void);
 uint8_t car_get_cruise_speed(void);
 
+
+
 #ifdef __cplusplus
 }
 #endif

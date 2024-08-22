@@ -14,6 +14,7 @@ typedef struct
 	volatile uint16_t flag_100ms;
 	volatile uint16_t flag_250ms;
 	volatile uint16_t flag_1000ms;
+	volatile uint16_t flag_10000ms;
 	volatile uint32_t msec;
 	volatile uint32_t sec;
 	volatile uint32_t millis;
