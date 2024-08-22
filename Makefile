@@ -9,9 +9,9 @@ COMMON_LDFLAGS=--static -lc -lm -Wl,--cref -Wl,--gc-sections #-Wl,--print-gc-sec
 
 PHONY:all
 
-#all: vw_nc03.bin volvo_od2.bin qemu.bin
-all: volvo_od2.bin
 
+all: volvo_od2.bin
+#all: vw_nc03.bin volvo_od2.bin qemu.bin
 include Makefile_stm32f1
 include Makefile_volvo_od2
 #include Makefile_vw_nc03

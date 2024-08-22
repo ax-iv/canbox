@@ -212,8 +212,10 @@ static void  toyota_camry_40_ms_fuel_handler(const uint8_t * msg, struct msg_des
 		carstate.low_fuel_lvl = STATE_UNDEF;
 		return;
 	}
-	carstate.low_fuel_lvl = (msg[4]/2) <= 5 ? 1: 0;
-	carstate.fuel_lvl = (msg[4]/2); //scale ??
+	if(((msg[0] & 0xFF) ==  0x03) && msg[3]){
+		carstate.low_fuel_lvl = (msg[3]/2) <= 5 ? 1: 0;
+		carstate.fuel_lvl = (msg[3]/2); //scale ??
+	}
 	
 }
 

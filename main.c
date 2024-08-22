@@ -13,6 +13,7 @@
 #include "car.h"
 #include "canbox.h"
 #include "conf.h"
+#include "hw_i2c.h"
 
 static uint32_t rear_off_delay = 0;
 static uint32_t rear_on_delay = 0;
@@ -512,7 +513,9 @@ int main(void)
 
 				canbox_process();
 			}
-			drawOLED();
+			if(car_get_acc() || debug_on){
+				drawOLED();
+			}
 		}
 
 		if (timer.flag_1000ms) {

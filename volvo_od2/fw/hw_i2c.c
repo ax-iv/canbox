@@ -6,6 +6,7 @@
 #include "hw_tick.h"
 
 #include "hw.h"
+#include "car.h"
 #include "hw_i2c.h"
 
  
@@ -96,7 +97,7 @@ void drawSpeed(uint16_t value){
   }
 }
 void drawCruiseSet(uint16_t value, uint8_t reDrawAll){
-  if(car_get_cruse_enable() == 1 && isUpdateCruise == 1){
+  if(car_get_cruise_enable() == 1 && isUpdateCruise == 1){
     if(reDrawAll==1){
       lastCruise=value;
       lastCruiseActive = 1;

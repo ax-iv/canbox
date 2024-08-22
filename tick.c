@@ -1,6 +1,6 @@
 #include "hw_tick.h"
 
-volatile tick_t timer = { 0, 0, 0, 0, 0, 0, 0 };
+volatile tick_t timer = { 0, 0, 0, 0, 0, 0, 0, 0};
 
 void hw_systick_callback(void)
 {

@@ -1,3 +1,10 @@
+/*
+    Based on project: https://github.com/GyverLibs/GyverOLED/ v.1.6
+
+    AlexGyver, alex@alexgyver.ru
+    https://alexgyver.ru/
+    MIT License
+*/
 #ifndef GyverOLED_h
 #define GyverOLED_h
 
@@ -107,7 +114,7 @@
     size_t oled_write(uint8_t data);   
 
     void oled_print_i8(int8_t data);
-    
+
     void oled_print_u8(uint8_t data);
     
     void oled_print_u16(uint16_t data); 

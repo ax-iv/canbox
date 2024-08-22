@@ -433,12 +433,12 @@ static const uint8_t _oled_init[]  = {
                             uint8_t prevData = 0;
                             if (_x + i >= 0 && _x + i <= _maxX)                                                 // внутри дисплея
                                 for (uint8_t j = 0; j < _scaleX; j++) {                                         // выводим. По Y
-                                    uint8_t data = newData >> (j * 8);                                             // получаем кусок буфера
+                                    uint8_t aData = newData >> (j * 8);                                             // получаем кусок буфера
                                     if (_shift == 0) {                                                          // если вывод без сдвига на строку
-                                        oled_writeData(data, j, i, _mode);                                           // выводим
+                                        oled_writeData(aData, j, i, _mode);                                           // выводим
                                     } else {                                                                    // со сдвигом
-                                        oled_writeData((prevData >> (8 - _shift)) | (data << _shift), j, i, _mode);  // склеиваем и выводим
-                                        prevData = data;                                                        // запоминаем предыдущий
+                                        oled_writeData((prevData >> (8 - _shift)) | (aData << _shift), j, i, _mode);  // склеиваем и выводим
+                                        prevData = aData;                                                        // запоминаем предыдущий
                                     }
                                 }
                             if (_shift != 0) oled_writeData(prevData >> (8 - _shift), _scaleX, i, _mode);  // выводим нижний кусочек, если со сдвигом
@@ -471,7 +471,7 @@ static const uint8_t _oled_init[]  = {
 
     void oled_print_i8(int8_t data){
         if (data < 0) {
-            int t = oled_write('-');
+            oled_write('-');
             data = -data;
         }
         printNumber(data,10);
