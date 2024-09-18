@@ -297,7 +297,7 @@ static void  toyota_camry_40_ms_cruise_state_120(const uint8_t * msg, struct msg
 }
 
 
-struct msg_desc_t toyota_camry_40_ms[] =
+struct msg_desc_t toyota_camry_40_ms[] = 
 {
 	{ 0x025,   80, 0, 0, toyota_camry_40_ms_wheel_handler, 0,{0,0,0,0,0,0,0,0} },
 	{ 0x0b4,   100, 0, 0, toyota_camry_40_ms_speed_handler, 0,{0,0,0,0,0,0,0,0} },
