@@ -177,18 +177,31 @@ typedef struct msg_desc_t
 	uint16_t tick;
 	uint32_t num;
 	void (*in_handler)(const uint8_t * msg, struct msg_desc_t * desc);
+	uint32_t req_id;
+	uint8_t  req_data[8];	
 } msg_desc_t;
+
 
 uint8_t is_timeout(struct msg_desc_t * desc)
 {
 	if (desc->tick >= (2 * desc->period)) {
-
 		desc->tick = 2 * desc->period;
 		return 1;
 	}
-
 	return 0;
 }
+
+uint8_t is_timeout_req(struct msg_desc_t * desc)
+{
+	if (desc->req_id > 0) {
+		if (desc->tick >= (desc->period)) {
+			desc->tick = desc->period;
+			return 1;
+		}
+	}
+	return 0;
+}
+
 
 #include "cars/anymsg.c"
 
@@ -229,6 +242,14 @@ enum e_car_t car_get_next_car(void)
 		car = e_car_anymsg;
 
 	return car;
+}
+
+void car_request(struct msg_desc_t * desc){
+	msg_can_t msg_7c0 = { .id = desc->req_id, .num = 1, .type = 0, .len = 8, .data = { desc->req_data[0], 
+		desc->req_data[1], desc->req_data[2], desc->req_data[3], desc->req_data[4], desc->req_data[5], 
+		desc->req_data[6], desc->req_data[7] } };
+	
+	hw_can_snd_msg(hw_can_get_mscan(),&msg_7c0);
 }
 
 static void in_process(struct can_t * can, uint8_t ticks, struct msg_desc_t * msg_desc, uint8_t desc_num)
@@ -279,6 +300,11 @@ static void in_process(struct can_t * can, uint8_t ticks, struct msg_desc_t * ms
 					desc->num = msg.num;
 
 					desc->in_handler(msg.data, desc);
+
+					if(is_timeout_req(desc)){
+						
+						car_request(desc);
+					}
 				}
 
 				break;
@@ -286,6 +312,8 @@ static void in_process(struct can_t * can, uint8_t ticks, struct msg_desc_t * ms
 		}
 	}
 }
+
+
 
 void car_init(enum e_car_t car, struct key_cb_t * cb)
 {
@@ -325,6 +353,8 @@ enum e_car_t car_get_car(void)
 {
 	return carstate.car;
 }
+
+
 
 void car_process(uint8_t ticks)
 {

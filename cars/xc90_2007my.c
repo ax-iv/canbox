@@ -184,12 +184,12 @@ static void xc90_2007my_ms_acc_handler(const uint8_t * msg, struct msg_desc_t * 
 
 struct msg_desc_t xc90_2007my_ms[] =
 {
-	{ 0x0217ffc, 20, 0, 0, xc90_2007my_ms_lsm0_handler },
-	{ 0x131726c, 25, 0, 0, xc90_2007my_ms_swm_handler },
-	{ 0x12173be, 45, 0, 0, xc90_2007my_ms_rem_handler },
-	{ 0x2510020, 80, 0, 0, xc90_2007my_ms_wheel_handler },
-	{ 0x2803008, 60, 0, 0, xc90_2007my_ms_lsm1_handler },
-	{ 0x3200428, 90, 0, 0, xc90_2007my_ms_gear_handler },
-	{ 0x2006428, 120, 0, 0, xc90_2007my_ms_acc_handler },
+	{ 0x0217ffc, 20, 0, 0, xc90_2007my_ms_lsm0_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x131726c, 25, 0, 0, xc90_2007my_ms_swm_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x12173be, 45, 0, 0, xc90_2007my_ms_rem_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2510020, 80, 0, 0, xc90_2007my_ms_wheel_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2803008, 60, 0, 0, xc90_2007my_ms_lsm1_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x3200428, 90, 0, 0, xc90_2007my_ms_gear_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2006428, 120, 0, 0, xc90_2007my_ms_acc_handler , 0,{0,0,0,0,0,0,0,0}},
 };
 

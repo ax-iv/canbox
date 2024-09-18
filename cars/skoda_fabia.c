@@ -183,14 +183,14 @@ static void skoda_fabia_ms_taho_handler(const uint8_t * msg, struct msg_desc_t *
 
 struct msg_desc_t skoda_fabia_ms[] =
 {
-	{ 0x635, 100, 0, 0, skoda_fabia_ms_illum_handler },
-	{ 0x131726c, 25, 0, 0, skoda_fabia_ms_swm_handler },
-	{ 0x371, 200, 0, 0, skoda_fabia_ms_rem_handler },
-	{ 0x2510020, 80, 0, 0, skoda_fabia_ms_wheel_handler },
-	{ 0x621, 200, 0, 0, skoda_fabia_ms_park_handler },
-	{ 0x351, 100, 0, 0, skoda_fabia_ms_gear_handler },
-	{ 0x271, 100, 0, 0, skoda_fabia_ms_acc_handler },
-	{ 0x3e1, 200, 0, 0, skoda_fabia_ms_aircon_handler },
-	{ 0x353, 100, 0, 0, skoda_fabia_ms_taho_handler },
+	{ 0x635, 100, 0, 0, skoda_fabia_ms_illum_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x131726c, 25, 0, 0, skoda_fabia_ms_swm_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x371, 200, 0, 0, skoda_fabia_ms_rem_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x2510020, 80, 0, 0, skoda_fabia_ms_wheel_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x621, 200, 0, 0, skoda_fabia_ms_park_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x351, 100, 0, 0, skoda_fabia_ms_gear_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x271, 100, 0, 0, skoda_fabia_ms_acc_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x3e1, 200, 0, 0, skoda_fabia_ms_aircon_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x353, 100, 0, 0, skoda_fabia_ms_taho_handler , 0,{0,0,0,0,0,0,0,0}},
 };
 

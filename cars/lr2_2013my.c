@@ -125,9 +125,9 @@ static void lr2_2013my_ms_405_handler(const uint8_t * msg, struct msg_desc_t * d
 
 struct msg_desc_t lr2_2013my_ms[] =
 {
-	{ 0x10, 50, 0, 0, lr2_2013my_ms_10_handler },
-	{ 0xb8, 60, 0, 0, lr2_2013my_ms_b8_handler },
-	{ 0x4a6, 90, 0, 0, lr2_2013my_ms_4a6_handler },
-	{ 0x405, 500, 0, 0, lr2_2013my_ms_405_handler },
+	{ 0x10, 50, 0, 0, lr2_2013my_ms_10_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0xb8, 60, 0, 0, lr2_2013my_ms_b8_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x4a6, 90, 0, 0, lr2_2013my_ms_4a6_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x405, 500, 0, 0, lr2_2013my_ms_405_handler, 0,{0,0,0,0,0,0,0,0} },
 };
 

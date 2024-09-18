@@ -171,12 +171,12 @@ static void lr2_2007my_ms_405_handler(const uint8_t * msg, struct msg_desc_t * d
 
 static struct msg_desc_t lr2_2007my_ms[] =
 {
-	{ 0x06c, 30, 0, 0, lr2_2007my_ms_6c_handler },
-	{ 0x07e, 50, 0, 0, lr2_2007my_ms_7e_handler },
-	{ 0x0fd, 50, 0, 0, lr2_2007my_ms_fd_handler },
-	{ 0x110, 60, 0, 0, lr2_2007my_ms_110_handler },
-	{ 0x188, 70, 0, 0, lr2_2007my_ms_188_handler },
-	{ 0x2a0, 115, 0, 0, lr2_2007my_ms_2a0_handler },
-	{ 0x405, 500, 0, 0, lr2_2007my_ms_405_handler },
+	{ 0x06c, 30, 0, 0, lr2_2007my_ms_6c_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x07e, 50, 0, 0, lr2_2007my_ms_7e_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x0fd, 50, 0, 0, lr2_2007my_ms_fd_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x110, 60, 0, 0, lr2_2007my_ms_110_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x188, 70, 0, 0, lr2_2007my_ms_188_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2a0, 115, 0, 0, lr2_2007my_ms_2a0_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x405, 500, 0, 0, lr2_2007my_ms_405_handler , 0,{0,0,0,0,0,0,0,0}},
 };
 

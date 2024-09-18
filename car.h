@@ -65,6 +65,7 @@ typedef struct key_cb_t
 
 void car_init(enum e_car_t car, struct key_cb_t * cb);
 void car_process(uint8_t);
+//void car_request(struct msg_desc_t * msg_desc);
 
 enum e_car_t car_get_car(void);
 enum e_car_t car_get_next_car(void);

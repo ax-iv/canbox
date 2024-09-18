@@ -520,11 +520,11 @@ int main(void)
 
 		if (timer.flag_10000ms) {
 			timer.flag_10000ms = 0;
-			if (acc && (conf_get_car() == e_car_toyota_camry40)){
+			/*if (acc && (conf_get_car() == e_car_toyota_camry40)){
 				//7C0# 02 21 29 00 00 00 00 00
 				msg_can_t msg_7c0 = { .id = 0x7C0, .num = 1, .type = 0, .len = 8, .data = { 0x02, 0x21, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00 } };
 				hw_can_snd_msg(hw_can_get_mscan(),&msg_7c0);
-			}
+			}*/
 		}
 
 		if (timer.flag_1000ms) {

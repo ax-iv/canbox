@@ -15,6 +15,6 @@ static void anymsg_handler(const uint8_t * msg, struct msg_desc_t * desc)
 
 struct msg_desc_t anymsg_desc[] =
 {
-	{ 0x0, 100, 0, 0, anymsg_handler },
+	{ 0x0, 100, 0, 0, anymsg_handler, 0,{0,0,0,0,0,0,0,0} },
 };
 

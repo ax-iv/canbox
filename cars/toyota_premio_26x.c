@@ -110,13 +110,13 @@ static void toyota_premio_26x_ms_temp_handler(const uint8_t * msg, struct msg_de
 
 struct msg_desc_t toyota_premio_26x_ms[] =
 {
-	{ 0x025,  	 80, 0, 0, toyota_premio_26x_ms_wheel_handler },
-	{ 0x0b4,	100, 0, 0, toyota_premio_26x_ms_speed_handler },
-	{ 0x620,    200, 0, 0, toyota_premio_26x_ms_ign_brake_doors_handler },
-	{ 0x622,   1000, 0, 0, toyota_premio_26x_ms_light_handler },
-	{ 0x3b4,   1000, 0, 0, toyota_premio_26x_ms_drive_mode_handler},
-	{ 0x611,   1000, 0, 0, toyota_premio_26x_ms_odometer},
-	{ 0x2c4,    100, 0, 0, toyota_premio_26x_ms_tacho_handler},
-	{ 0x3b0,   2000, 0, 0, toyota_premio_26x_ms_temp_handler},
+	{ 0x025,  	 80, 0, 0, toyota_premio_26x_ms_wheel_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x0b4,	100, 0, 0, toyota_premio_26x_ms_speed_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x620,    200, 0, 0, toyota_premio_26x_ms_ign_brake_doors_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x622,   1000, 0, 0, toyota_premio_26x_ms_light_handler , 0,{0,0,0,0,0,0,0,0}},
+	{ 0x3b4,   1000, 0, 0, toyota_premio_26x_ms_drive_mode_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x611,   1000, 0, 0, toyota_premio_26x_ms_odometer, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2c4,    100, 0, 0, toyota_premio_26x_ms_tacho_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x3b0,   2000, 0, 0, toyota_premio_26x_ms_temp_handler, 0,{0,0,0,0,0,0,0,0}},
 };
 

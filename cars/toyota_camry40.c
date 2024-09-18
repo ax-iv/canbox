@@ -221,20 +221,101 @@ static void  toyota_camry_40_ms_fuel_handler(const uint8_t * msg, struct msg_des
 	
 }
 
+/*
+  
+  CRuise Check Cruise Control DTCs :
+  Send: 7E0 : 02 13 80 00 0000 0000
+  Resp: 7E8 : 04 53 01 A7 99 00 00 00 <- Error code 0B 27 99
+*/
+
+/*
+Cruise Control Memory Vehicle SPD                 CC Set          21D3  A 0 150 km/h        7E2
+Cruise Throttle Opening Angle                     CC Throt Angle  21D3  0.3922 * B  0 100 % 7E2
+Cruise Control Main Switch -- (Main CPU)          CC Switch       21D3  {C:0} 0 1 Bin       7E2
+Cruise Control Main Switch -- Ready (Main CPU)    CC Ready        21D3  {C:2} 0 1 Bin       7E2
+Cruise Control Main Switch -- Indicator (Main CPU)CC Indicator    21D3  {C:5} 0 1 Bin       7E2
+Cruise Control                                    CC              21D3  {C:6} 0 1 Bin       7E2
+
+
+.cruse_enable = 0,
+	.cruse_active = 0,
+	.cruse_speed = 0
+
+	MODE $01 — Режим 01, считывание текущих параметров.
+	MODE $02 — Режим 02, считывание снимка системы / значения параметров / на момент возникновения неисправности
+	MODE $03 — Режим 03, считывание кодов ошибок / DTC …
+	MODE $04 — Режим 04, стирание кодов ошибок и диагностических данных
+
+	<!-toyota fj --------->
+	<!-- cruise control -->
+	<!--------------------> 
+	<command send="2121" skipCount="4">
+		<values>
+			<value targetId="169" conversion="B3>>5" units="bit"></value> <!-- cruise control (bit 5 = 1 active)  -->
+			<value targetId="171" conversion="B1" units="km/h"></value> <!-- cruise control set speed -->
+		</values>
+	</command>
+*/
+
+static void  toyota_camry_40_ms_cruise_data(const uint8_t * msg, struct msg_desc_t * desc){
+	/*CRuise        CAN 5C8 3 XX 00 YY, YY - 00=OFF, 10=ON*/
+	if (is_timeout(desc)) {
+		carstate.cruse_enable = STATE_UNDEF;
+		carstate.cruse_active = STATE_UNDEF;			
+		carstate.cruse_speed = 0;			
+		return;
+	}	
+	carstate.cruse_enable = (msg[2] & 0x10)>0 ? 1 : 0;
+	carstate.cruse_active = (msg[2] & 0x10)>0 ? 1 : 0;
+	carstate.cruse_speed = msg[0];
+	
+}
+
+static void  toyota_camry_40_ms_cruise_state_5C8(const uint8_t * msg, struct msg_desc_t * desc){
+	/*CRuise        CAN 5C8 3 XX 00 YY, YY - 00=OFF, 10=ON*/
+	if (is_timeout(desc)) {
+		carstate.cruse_enable = STATE_UNDEF;					
+		return;
+	}	
+	carstate.cruse_enable = (msg[2] & 0x10)>0 ? 1 : 0;
+	
+}
+
+static void  toyota_camry_40_ms_cruise_state_120(const uint8_t * msg, struct msg_desc_t * desc){
+	/*0x120 // DriveMode
+  	CRuise ON\OFF CAN 120 8 00 00 00 00 XX 00 00 YY , //
+    XX - MSB : cruise ON/OFF
+    YY - 0x50=D 0x51=B 0x4D=P 0x4E=R 0x4F=N MSB=CruiseON/off 0x49|0x4B = Standby*/
+	if (is_timeout(desc)) {
+		carstate.cruse_enable = STATE_UNDEF;
+		carstate.cruse_active = STATE_UNDEF;
+			
+		return;
+	}	
+	carstate.cruse_enable = (msg[4] & 0x80)>0 ? 1 : 0;
+	carstate.cruse_active = (msg[7] & 0x80)>0 ? 1 : 0;
+}
+
+
 struct msg_desc_t toyota_camry_40_ms[] =
 {
-	{ 0x025,   80, 0, 0, toyota_camry_40_ms_wheel_handler },
-	{ 0x0b4,   100, 0, 0, toyota_camry_40_ms_speed_handler },
-	{ 0x620,   200, 0, 0, toyota_camry_40_ms_ign_brake_doors_handler },
-	{ 0x622,   1000, 0, 0, toyota_camry_40_ms_light_handler },
-	{ 0x3b4,   1000, 0, 0, toyota_camry_40_ms_drive_mode_handler},
-	{ 0x611,   1000, 0, 0, toyota_camry_40_ms_odometer},
-	{ 0x2c4,   100, 0, 0, toyota_camry_40_ms_tacho_handler},
-	{ 0x3b0,   2000, 0, 0, toyota_camry_40_ms_temp_handler},
-	{ 0x396,   100, 0, 0, toyota_camry_40_ms_park_handler},
-	{ 0x381,   1000, 0, 0, toyota_camry_40_ms_air_set_handler},
-	{ 0x382,   1000, 0, 0, toyota_camry_40_ms_air_temp_handler},
-	{ 0x7C8,   11000, 0, 0,toyota_camry_40_ms_fuel_handler},
+	{ 0x025,   80, 0, 0, toyota_camry_40_ms_wheel_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x0b4,   100, 0, 0, toyota_camry_40_ms_speed_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x620,   200, 0, 0, toyota_camry_40_ms_ign_brake_doors_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x622,   1000, 0, 0, toyota_camry_40_ms_light_handler, 0,{0,0,0,0,0,0,0,0} },
+	{ 0x3b4,   1000, 0, 0, toyota_camry_40_ms_drive_mode_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x611,   1000, 0, 0, toyota_camry_40_ms_odometer, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x2c4,   100, 0, 0, toyota_camry_40_ms_tacho_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x3b0,   2000, 0, 0, toyota_camry_40_ms_temp_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x396,   100, 0, 0, toyota_camry_40_ms_park_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x381,   1000, 0, 0, toyota_camry_40_ms_air_set_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x382,   1000, 0, 0, toyota_camry_40_ms_air_temp_handler, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x7C8,   10000, 0, 0,toyota_camry_40_ms_fuel_handler, 0x7C0,{0x02, 0x21, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00}},
+
+	{ 0x120,   100, 0, 0,toyota_camry_40_ms_cruise_state_120, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x5C8,   100, 0, 0,toyota_camry_40_ms_cruise_state_5C8, 0,{0,0,0,0,0,0,0,0}},
+	{ 0x7EA,   500, 0, 0,toyota_camry_40_ms_cruise_data, 0x7E2,{0x02, 0x21, 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00}},
+	//{ 0x7E8,   10000, 0, 0,toyota_camry_40_ms_cruise_date, 0x7E0,{0x02, 0x13, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00}},
 	
 };
 
