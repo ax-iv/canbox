@@ -193,6 +193,7 @@ static void usart_process(void)
 		canbox_cmd_process(ch);
 
 		if (ch == 'O') {
+			
 
 			if (debug_on_cnt++ > 10) {
 
@@ -459,9 +460,21 @@ static void gpio_process(void)
 		hw_gpio_rear_off();
 }
 
+
+
 int main(void)
 {
 	hw_setup();
+	while(1){
+		for (int i = 0; i < 500000; i++) {
+				__asm__("nop");
+		}
+		hw_gpio_ill_on();
+		for (int i = 0; i < 500000; i++) {
+				__asm__("nop");
+		}
+		hw_gpio_ill_off();
+	}
 
 	conf_read();
 
@@ -470,6 +483,9 @@ int main(void)
 	uint8_t acc = car_get_acc();
 	uint32_t ms_can_nums = 0;
 	uint32_t ms_can_stop_counter = 0;
+
+	
+	
 
 	while(1) {
 
@@ -493,7 +509,7 @@ int main(void)
 		if (timer.flag_100ms) {
 
 			timer.flag_100ms = 0;
-
+			car_request(100);
 			if (!debug_on)
 				canbox_park_process();
 		}
@@ -528,6 +544,10 @@ int main(void)
 		}
 
 		if (timer.flag_1000ms) {
+			
+			char buf[10];
+			snprintf(buf, sizeof(buf), "--------\r\n");
+			hw_usart_write(hw_usart_get(), (uint8_t *)buf, strlen(buf));
 
 			timer.flag_1000ms = 0;
 

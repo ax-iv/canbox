@@ -257,31 +257,7 @@ Cruise Control                                    CC              21D3  {C:6} 0 
 	</command>
 */
 
-static void  toyota_camry_40_ms_cruise_data(const uint8_t * msg, struct msg_desc_t * desc){
-	/*CRuise        CAN 5C8 3 XX 00 YY, YY - 00=OFF, 10=ON*/
-	if (is_timeout(desc)) {
-		carstate.cruse_enable = STATE_UNDEF;
-		carstate.cruse_active = STATE_UNDEF;			
-		carstate.cruse_speed = 0;			
-		return;
-	}	
-	carstate.cruse_enable = (msg[2] & 0x10)>0 ? 1 : 0;
-	carstate.cruse_active = (msg[2] & 0x10)>0 ? 1 : 0;
-	carstate.cruse_speed = msg[0];
-	
-}
-
-static void  toyota_camry_40_ms_cruise_state_5C8(const uint8_t * msg, struct msg_desc_t * desc){
-	/*CRuise        CAN 5C8 3 XX 00 YY, YY - 00=OFF, 10=ON*/
-	if (is_timeout(desc)) {
-		carstate.cruse_enable = STATE_UNDEF;					
-		return;
-	}	
-	carstate.cruse_enable = (msg[2] & 0x10)>0 ? 1 : 0;
-	
-}
-
-static void  toyota_camry_40_ms_cruise_state_120(const uint8_t * msg, struct msg_desc_t * desc){
+static void  toyota_camry_40_ms_cruise_date(const uint8_t * msg, struct msg_desc_t * desc){
 	/*0x120 // DriveMode
   	CRuise ON\OFF CAN 120 8 00 00 00 00 XX 00 00 YY , //
     XX - MSB : cruise ON/OFF
@@ -289,33 +265,43 @@ static void  toyota_camry_40_ms_cruise_state_120(const uint8_t * msg, struct msg
 	if (is_timeout(desc)) {
 		carstate.cruse_enable = STATE_UNDEF;
 		carstate.cruse_active = STATE_UNDEF;
-			
+		carstate.cruse_speed = 	0;	
 		return;
 	}	
-	carstate.cruse_enable = (msg[4] & 0x80)>0 ? 1 : 0;
-	carstate.cruse_active = (msg[7] & 0x80)>0 ? 1 : 0;
+	carstate.cruse_enable = (msg[2] & 0x01)>0 ? 1 : 0;
+	carstate.cruse_active = (msg[2] & 0x02)>0 ? 1 : 0;	
+	carstate.cruse_speed = msg[1];
 }
 
 
 struct msg_desc_t toyota_camry_40_ms[] = 
 {
-	{ 0x025,   80, 0, 0, toyota_camry_40_ms_wheel_handler, 0,{0,0,0,0,0,0,0,0} },
-	{ 0x0b4,   100, 0, 0, toyota_camry_40_ms_speed_handler, 0,{0,0,0,0,0,0,0,0} },
-	{ 0x620,   200, 0, 0, toyota_camry_40_ms_ign_brake_doors_handler, 0,{0,0,0,0,0,0,0,0} },
-	{ 0x622,   1000, 0, 0, toyota_camry_40_ms_light_handler, 0,{0,0,0,0,0,0,0,0} },
-	{ 0x3b4,   1000, 0, 0, toyota_camry_40_ms_drive_mode_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x611,   1000, 0, 0, toyota_camry_40_ms_odometer, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x2c4,   100, 0, 0, toyota_camry_40_ms_tacho_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x3b0,   2000, 0, 0, toyota_camry_40_ms_temp_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x396,   100, 0, 0, toyota_camry_40_ms_park_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x381,   1000, 0, 0, toyota_camry_40_ms_air_set_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x382,   1000, 0, 0, toyota_camry_40_ms_air_temp_handler, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x7C8,   10000, 0, 0,toyota_camry_40_ms_fuel_handler, 0x7C0,{0x02, 0x21, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00}},
-
-	{ 0x120,   100, 0, 0,toyota_camry_40_ms_cruise_state_120, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x5C8,   100, 0, 0,toyota_camry_40_ms_cruise_state_5C8, 0,{0,0,0,0,0,0,0,0}},
-	{ 0x7EA,   500, 0, 0,toyota_camry_40_ms_cruise_data, 0x7E2,{0x02, 0x21, 0xD3, 0x00, 0x00, 0x00, 0x00, 0x00}},
-	//{ 0x7E8,   10000, 0, 0,toyota_camry_40_ms_cruise_date, 0x7E0,{0x02, 0x13, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00}},
+	{ 0x025,   80,    0, 0, 0, toyota_camry_40_ms_wheel_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x0b4,   100,   0, 0, 0, toyota_camry_40_ms_speed_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x620,   200,   0, 0, 0, toyota_camry_40_ms_ign_brake_doors_handler,	{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x622,   1000,  0, 0, 0, toyota_camry_40_ms_light_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x3b4,   1000,  0, 0, 0, toyota_camry_40_ms_drive_mode_handler, 		{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x611,   1000,  0, 0, 0, toyota_camry_40_ms_odometer, 				{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x2c4,   100,   0, 0, 0, toyota_camry_40_ms_tacho_handler,			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x3b0,   2000,  0, 0, 0, toyota_camry_40_ms_temp_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x396,   100,   0, 0, 0, toyota_camry_40_ms_park_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x381,   1000,  0, 0, 0, toyota_camry_40_ms_air_set_handler, 			{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x382,   1000,  0, 0, 0, toyota_camry_40_ms_air_temp_handler, 		{0,0,0,0,0,0,0,0}, 0, 0},
+	{ 0x7C8,   10000, 0, 0, 0, toyota_camry_40_ms_fuel_handler, {0x21, 0x29, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},0x7C0,2},
+	{ 0x7E8,   500,   0, 0, 0, toyota_camry_40_ms_cruise_date, {0x21, 0xd3, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},0x7E0,2},
 	
 };
+
+/*typedef struct msg_desc_t
+{
+	uint32_t id;
+	uint16_t period;
+	uint16_t tick;
+	uint16_t req_tick;
+	uint32_t num;
+	void (*in_handler)(const uint8_t * msg, struct msg_desc_t * desc);
+	uint32_t req_id;
+	uint8_t req_dlc;
+	uint8_t  req_data[8];	
+} msg_desc_t;*/
 

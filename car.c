@@ -175,10 +175,14 @@ typedef struct msg_desc_t
 	uint32_t id;
 	uint16_t period;
 	uint16_t tick;
+	uint16_t req_tick;
 	uint32_t num;
 	void (*in_handler)(const uint8_t * msg, struct msg_desc_t * desc);
-	uint32_t req_id;
 	uint8_t  req_data[8];	
+	uint32_t req_id;
+	uint8_t req_dlc;
+	
+	
 } msg_desc_t;
 
 
@@ -194,8 +198,8 @@ uint8_t is_timeout(struct msg_desc_t * desc)
 uint8_t is_timeout_req(struct msg_desc_t * desc)
 {
 	if (desc->req_id > 0) {
-		if (desc->tick >= (desc->period)) {
-			desc->tick = desc->period;
+		if (desc->req_tick >= (desc->period)) {
+			desc->req_tick = desc->period;
 			return 1;
 		}
 	}
@@ -244,73 +248,65 @@ enum e_car_t car_get_next_car(void)
 	return car;
 }
 
-void car_request(struct msg_desc_t * desc){
-	msg_can_t msg_7c0 = { .id = desc->req_id, .num = 1, .type = 0, .len = 8, .data = { desc->req_data[0], 
-		desc->req_data[1], desc->req_data[2], desc->req_data[3], desc->req_data[4], desc->req_data[5], 
-		desc->req_data[6], desc->req_data[7] } };
-	
-	hw_can_snd_msg(hw_can_get_mscan(),&msg_7c0);
-}
+
+
 
 static void in_process(struct can_t * can, uint8_t ticks, struct msg_desc_t * msg_desc, uint8_t desc_num)
 {
 	uint8_t msgs_num = hw_can_get_msg_nums(can);
 	uint32_t all_packs = 0;
 	for (uint8_t i = 0; i < msgs_num; i++) {
-
 		struct msg_can_t msg;
 		if (!hw_can_get_msg(can, &msg, i))
 			continue;
-
 		all_packs += msg.num;
-
 		for (uint32_t j = 0; j < desc_num; j++) {
-
 			struct msg_desc_t * desc = &msg_desc[j];
-
 			//special purpose - any activity on the bus
 			if (0 == desc->id) {
-
 				if (desc->in_handler) {
-
 					//last msg
 					if (i == (msgs_num - 1)) {
-
 						if (all_packs == desc->num)
 							desc->tick += ticks;
 						else
 							desc->tick = 0;
-
 						desc->num = all_packs;
-
 						desc->in_handler(msg.data, desc);
 					}
 				}
 			}
 			else if (msg.id == desc->id) {
-
 				if (desc->in_handler) {
-
 					//no new packs, increase timeout
 					if (msg.num == desc->num)
 						desc->tick += ticks;
 					else
 						desc->tick = 0;
-
 					desc->num = msg.num;
-
 					desc->in_handler(msg.data, desc);
-
-					if(is_timeout_req(desc)){
-						
-						car_request(desc);
-					}
 				}
 
 				break;
 			}
 		}
 	}
+}
+
+static void send_request(struct can_t * can, uint8_t ticks, struct msg_desc_t * msg_desc, uint8_t desc_num)
+{
+	for (uint32_t j = 0; j < desc_num; j++) {
+		struct msg_desc_t * desc = &msg_desc[j];
+		//special purpose - any activity on the bus
+		if (0 == desc->req_id) continue;
+		desc->req_tick += ticks;
+		if (is_timeout_req(desc)){
+			msg_can_t msg = { .id = desc->req_id, .num = 1, .type = 0, .len = desc->req_dlc, .data = desc->req_data };
+			desc->req_tick=0;
+			hw_can_snd_msg(can,&msg);
+		}		
+	}
+	
 }
 
 
@@ -354,6 +350,54 @@ enum e_car_t car_get_car(void)
 	return carstate.car;
 }
 
+
+void car_request(uint8_t ticks){
+	struct can_t * can = hw_can_get_mscan();
+
+	switch (carstate.car) {
+
+		case e_car_anymsg:
+			send_request(can, ticks, anymsg_desc, sizeof(anymsg_desc)/sizeof(anymsg_desc[0]));
+			break;
+		case e_car_lr2_2007my:
+#ifdef USE_LR2_2007MY
+			send_request(can, ticks, lr2_2007my_ms, sizeof(lr2_2007my_ms)/sizeof(lr2_2007my_ms[0]));
+#endif
+			break;
+		case e_car_lr2_2013my:
+#ifdef USE_LR2_2013MY
+			send_request(can, ticks, lr2_2013my_ms, sizeof(lr2_2013my_ms)/sizeof(lr2_2013my_ms[0]));
+#endif
+			break;
+		case e_car_xc90_2007my:
+#ifdef USE_XC90_2007MY
+			send_request(can, ticks, xc90_2007my_ms, sizeof(xc90_2007my_ms)/sizeof(xc90_2007my_ms[0]));
+#endif
+			break;
+		case e_car_skoda_fabia:
+#ifdef USE_SKODA_FABIA
+			send_request(can, ticks, skoda_fabia_ms, sizeof(skoda_fabia_ms)/sizeof(skoda_fabia_ms[0]));
+#endif
+			break;
+		case e_car_q3_2015:
+#ifdef USE_Q3_2015
+			send_request(can, ticks, q3_2015_ms, sizeof(q3_2015_ms)/sizeof(q3_2015_ms[0]));
+			break;
+#endif
+		case e_car_toyota_premio_26x:
+#ifdef USE_TOYOTA_PREMIO_26X
+			send_request(can, ticks, toyota_premio_26x_ms, sizeof(toyota_premio_26x_ms)/sizeof(toyota_premio_26x_ms[0]));
+#endif
+			break;
+		case e_car_toyota_camry40:
+#ifdef USE_TOYOTA_CAMRY40
+			send_request(can, ticks,toyota_camry_40_ms,sizeof(toyota_camry_40_ms)/sizeof(toyota_camry_40_ms[0]));
+#endif		
+			break;
+		default:
+			break;
+	}
+}
 
 
 void car_process(uint8_t ticks)

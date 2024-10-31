@@ -7,6 +7,7 @@
 #include "hw_conf.h"
 
 //#define debug 1
+
 #ifdef debug
 #include <string.h>
 #include <stdio.h>
